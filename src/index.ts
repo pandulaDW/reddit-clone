@@ -10,6 +10,7 @@ import dbConfig from "./mikro-orm.config";
 import { __prod__ } from "./constants";
 import { PostResolver } from "./resolvers/post";
 import { UserResolver } from "./resolvers/user";
+import { MyContext } from "./types";
 
 const main = async () => {
   const app = express();
@@ -30,6 +31,7 @@ const main = async () => {
         secure: __prod__,
         sameSite: "lax",
       },
+      saveUninitialized: false,
       secret: "4006c0019cdb3d82c56ec377944edd68",
       resave: false,
     })
@@ -40,7 +42,7 @@ const main = async () => {
       resolvers: [PostResolver, UserResolver],
       validate: false,
     }),
-    context: ({ req, res }) => ({ em: orm.em, req, res }),
+    context: ({ req, res }): MyContext => ({ em: orm.em, req, res }),
   });
   apolloServer.applyMiddleware({ app });
 
