@@ -1,8 +1,8 @@
 # output folder
-dist
+server/dist
 
 # node_modules
-node_modules
+server/node_modules
 
 # vs_code settings
 .vscode
