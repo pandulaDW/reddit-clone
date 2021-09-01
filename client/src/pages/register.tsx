@@ -1,17 +1,40 @@
 import React from "react";
+import { gql, useMutation } from "@apollo/client";
 import { Box, Button } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import Wrapper from "../components/Wrapper";
 import InputField from "../components/InputField";
 
-interface Props {}
+const REGISTER_MUT = gql`
+  mutation Register($username: String!, $password: String!) {
+    login(options: { username: $username, password: $password }) {
+      user {
+        id
+        username
+      }
 
-const Register: React.FC<Props> = () => {
+      errors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+const Register = () => {
+  const [registerUser, { loading, error, data }] = useMutation(REGISTER_MUT);
+
+  console.log(data);
+
   return (
     <Wrapper variant="small">
       <Formik
         initialValues={{ username: "", password: "" }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) =>
+          registerUser({
+            variables: values,
+          })
+        }
       >
         {() => {
           return (
